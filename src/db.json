@@ -1,5 +1,39 @@
 {
-  "opportunities": [],
+  "opportunities": [
+    {
+      "id": "1",
+      "title": "Human Resource Intern",
+      "organization": "Northern Development Agency",
+      "location": "Garissa",
+      "type": "Internship",
+      "category": "Human Resources",
+      "deadline": "2026-12-20",
+      "description": "An illustrative internship opportunity for graduates interested in recruitment, employee records and HR administration.",
+      "image": "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800"
+    },
+    {
+      "id": "2",
+      "title": "Community Project Assistant",
+      "organization": "Community Development Initiative",
+      "location": "Wajir",
+      "type": "Job",
+      "category": "Community Development",
+      "deadline": "2026-12-25",
+      "description": "An illustrative opportunity supporting community projects, reporting and field activities.",
+      "image": "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800"
+    },
+    {
+      "id": "3",
+      "title": "ICT Training Scholarship",
+      "organization": "Digital Skills Foundation",
+      "location": "Mandera",
+      "type": "Scholarship",
+      "category": "Technology",
+      "deadline": "2026-12-30",
+      "description": "An illustrative scholarship for young people interested in developing digital and technology skills.",
+      "image": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800"
+    }
+  ],
   "users": [],
   "applications": [],
   "savedOpportunities": []
