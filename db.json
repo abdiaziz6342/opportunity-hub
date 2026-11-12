@@ -12,7 +12,6 @@
       "image": "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800"
     },
     {
-      "id": "2",
       "title": "Community Project Assistant",
       "organization": "Community Development Initiative",
       "location": "Wajir",
@@ -20,18 +19,19 @@
       "category": "Community Development",
       "deadline": "2026-12-25",
       "description": "An illustrative opportunity supporting community projects, reporting and field activities.",
-      "image": "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800"
+      "image": "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800",
+      "id": "2"
     },
     {
-      "id": "3",
       "title": "ICT Training Scholarship",
       "organization": "Digital Skills Foundation",
       "location": "Mandera",
       "type": "Scholarship",
       "category": "Technology",
-      "deadline": "2026-12-30",
+      "deadline": "2026-01-30",
       "description": "An illustrative scholarship for young people interested in developing digital and technology skills.",
-      "image": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800"
+      "image": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800",
+      "id": "3"
     }
   ],
   "users": [
@@ -65,6 +65,14 @@
       "id": "a2FdMEK-dZ0"
     }
   ],
-  "savedOpportunities": [],
+  "savedOpportunities": [
+    {
+      "userId": "OYRMuNKn0l0",
+      "opportunityId": "2",
+      "title": "Community Project Assistant",
+      "organization": "Community Development Initiative",
+      "id": "Nn6p7monrfY"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }

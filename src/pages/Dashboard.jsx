@@ -12,7 +12,7 @@ function Dashboard() {
 
   function loadDashboard() {
     if (!user) {
-      setLoading(false)
+      setLoading(true)
       return
     }
 

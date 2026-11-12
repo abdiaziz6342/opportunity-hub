@@ -44,6 +44,9 @@ if (isLogin) {
         name: user.name,
         email: user.email
       }))
+      setName("")
+      setEmail("")
+      setPassword("")
 
       window.dispatchEvent(new Event('userChanged'))
 

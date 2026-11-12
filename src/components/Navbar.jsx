@@ -34,7 +34,7 @@ function Navbar() {
   }
 
   return (
-    <nav className="bg-white border-b">
+    <nav className="bg-white border-b sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-4">
         <Link to="/" className="flex items-center gap-2 text-2xl font-bold text-blue-700">
           <BriefcaseBusiness />
