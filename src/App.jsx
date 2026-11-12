@@ -20,7 +20,7 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="account" element={<Account />} />
           <Route path="about" element={<About />} />
-          <Route path="admin" element={<AdminDashboard />} />
+          <Route path="qase" element={<AdminDashboard />} />
         </Route>
       </Routes>
     </BrowserRouter>
