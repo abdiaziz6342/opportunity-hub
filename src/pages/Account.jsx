@@ -17,88 +17,44 @@ function Account() {
     setLoading(true)
     setMessage('')
 
-    if (isLogin) {
-      fetch(
-        'http://localhost:3000/users?email=' +
-        encodeURIComponent(email) +
-        '&password=' +
-        encodeURIComponent(password)
-      )
-        .then(function (response) {
-          return response.json()
-        })
-        .then(function (users) {
-          if (users.length === 0) {
-            setMessage('Incorrect email or password.')
-            setLoading(false)
-            return
-          }
+   
+if (isLogin) {
+  fetch('http://localhost:3000/users?email=' + encodeURIComponent(email.trim()))
+    .then(function (response) {
+      return response.json()
+    })
+    .then(function (users) {
 
-          const user = users[0]
+      if (users.length === 0) {
+        setMessage('Email not found. Please register first.')
+        setLoading(false)
+        return
+      }
 
-          localStorage.setItem('currentUser', JSON.stringify({
-            id: user.id,
-            name: user.name,
-            email: user.email
-          }))
+      const user = users[0]
 
-          window.dispatchEvent(new Event('userChanged'))
-          navigate('/dashboard')
-        })
-        .catch(function () {
-          setMessage('Unable to connect to the server.')
-          setLoading(false)
-        })
-    } else {
-      fetch('http://localhost:3000/users?email=' + encodeURIComponent(email))
-        .then(function (response) {
-          return response.json()
-        })
-        .then(function (users) {
-          if (users.length > 0) {
-            setMessage('This email is already registered.')
-            setLoading(false)
-            return
-          }
+      if (user.password !== password) {
+        setMessage('Incorrect password.')
+        setLoading(false)
+        return
+      }
 
-          return fetch('http://localhost:3000/users', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              name: name,
-              email: email,
-              password: password
-            })
-          })
-        })
-        .then(function (response) {
-          if (!response) {
-            return
-          }
+      localStorage.setItem('currentUser', JSON.stringify({
+        id: user.id,
+        name: user.name,
+        email: user.email
+      }))
 
-          return response.json()
-        })
-        .then(function (user) {
-          if (!user) {
-            return
-          }
+      window.dispatchEvent(new Event('userChanged'))
 
-          localStorage.setItem('currentUser', JSON.stringify({
-            id: user.id,
-            name: user.name,
-            email: user.email
-          }))
+      navigate('/dashboard')
+    })
+    .catch(function () {
+      setMessage('Unable to connect to the server.')
+      setLoading(false)
+    })
+}
 
-          window.dispatchEvent(new Event('userChanged'))
-          navigate('/dashboard')
-        })
-        .catch(function () {
-          setMessage('Unable to create your account.')
-          setLoading(false)
-        })
-    }
   }
 
   return (
