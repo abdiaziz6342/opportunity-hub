@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import Skeleton from '../components/Skeleton'
@@ -10,6 +11,12 @@ function OpportunityDetails() {
   const [opportunity, setOpportunity] = useState(null)
   const [loading, setLoading] = useState(true)
   const [message, setMessage] = useState('')
+  const [showApplicationForm, setShowApplicationForm] = useState(false)
+
+  const [phone, setPhone] = useState('')
+  const [coverLetter, setCoverLetter] = useState('')
+  const [cvLink, setCvLink] = useState('')
+  const [submitting, setSubmitting] = useState(false)
 
   useEffect(function () {
     fetch('http://localhost:3000/opportunities/' + id)
@@ -52,35 +59,63 @@ function OpportunityDetails() {
           return
         }
 
-        return fetch('http://localhost:3000/applications', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            userId: user.id,
-            opportunityId: id,
-            title: opportunity.title,
-            organization: opportunity.organization,
-            status: 'Pending',
-            date: new Date().toLocaleDateString()
-          })
-        })
+        setShowApplicationForm(true)
+        setMessage('')
       })
+      .catch(function () {
+        setMessage('Unable to check your application. Try again.')
+      })
+  }
+
+  function handleSubmitApplication(event) {
+    event.preventDefault()
+
+    const user = JSON.parse(localStorage.getItem('currentUser'))
+
+    if (!user) {
+      navigate('/account')
+      return
+    }
+
+    setSubmitting(true)
+
+    fetch('http://localhost:3000/applications', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userId: user.id,
+        opportunityId: id,
+        name: user.name,
+        email: user.email,
+        phone: phone,
+        coverLetter: coverLetter,
+        cvLink: cvLink,
+        title: opportunity.title,
+        organization: opportunity.organization,
+        status: 'Pending',
+        date: new Date().toLocaleDateString()
+      })
+    })
       .then(function (response) {
-        if (!response) {
-          return
+        if (!response.ok) {
+          throw new Error('Application failed')
         }
 
         return response.json()
       })
-      .then(function (data) {
-        if (data) {
-          setMessage('Your application has been submitted successfully.')
-        }
+      .then(function () {
+        setMessage('Your application has been submitted successfully.')
+        setShowApplicationForm(false)
+        setPhone('')
+        setCoverLetter('')
+        setCvLink('')
+        setSubmitting(false)
       })
       .catch(function () {
         setMessage('Unable to submit your application. Try again.')
+        setSubmitting(false)
       })
   }
 
@@ -123,6 +158,10 @@ function OpportunityDetails() {
       .then(function (response) {
         if (!response) {
           return
+        }
+
+        if (!response.ok) {
+          throw new Error('Unable to save')
         }
 
         return response.json()
@@ -192,22 +231,96 @@ function OpportunityDetails() {
           </p>
         )}
 
-        <div className="flex flex-wrap gap-4 mt-8">
-          <button
-            onClick={handleApply}
-            className="flex items-center gap-2 bg-blue-700 text-white px-6 py-3 rounded-lg"
+        {showApplicationForm && (
+          <form
+            onSubmit={handleSubmitApplication}
+            className="border rounded-xl p-6 mt-8 space-y-4"
           >
-            <Send size={18} />
-            Apply Now
-          </button>
+            <h2 className="text-xl font-bold">Your Application</h2>
 
-          <button
-            onClick={handleSave}
-            className="flex items-center gap-2 border border-blue-700 text-blue-700 px-6 py-3 rounded-lg"
-          >
-            <Bookmark size={18} />
-            Save Opportunity
-          </button>
+            <div>
+              <label className="block font-medium mb-2">Phone Number</label>
+              <input
+                type="tel"
+                value={phone}
+                onChange={function (event) {
+                  setPhone(event.target.value)
+                }}
+                required
+                className="w-full border rounded-lg p-3"
+                placeholder="Enter your phone number"
+              />
+            </div>
+
+            <div>
+              <label className="block font-medium mb-2">Cover Letter</label>
+              <textarea
+                value={coverLetter}
+                onChange={function (event) {
+                  setCoverLetter(event.target.value)
+                }}
+                required
+                rows="5"
+                className="w-full border rounded-lg p-3"
+                placeholder="Explain why you are suitable for this opportunity"
+              />
+            </div>
+
+            <div>
+              <label className="block font-medium mb-2">CV Link</label>
+              <input
+                type="url"
+                value={cvLink}
+                onChange={function (event) {
+                  setCvLink(event.target.value)
+                }}
+                className="w-full border rounded-lg p-3"
+                placeholder="Paste a link to your CV (optional)"
+              />
+            </div>
+
+            <div className="flex flex-wrap gap-3">
+              <button
+                type="submit"
+                disabled={submitting}
+                className="bg-blue-700 text-white px-6 py-3 rounded-lg disabled:opacity-50"
+              >
+                {submitting ? 'Submitting...' : 'Submit Application'}
+              </button>
+
+              <button
+                type="button"
+                onClick={function () {
+                  setShowApplicationForm(false)
+                }}
+                className="border px-6 py-3 rounded-lg"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        )}
+
+        <div className="flex flex-wrap gap-4 mt-8">
+          {!showApplicationForm && (
+            <>
+              <button
+                onClick={handleApply}
+                className="flex items-center gap-2 bg-blue-700 text-white px-6 py-3 rounded-lg"
+              >
+                <Send size={18} />
+                Apply Now
+              </button>
+
+              <button
+                onClick={handleSave}
+                className="flex items-center gap-2 border border-blue-700 text-blue-700 px-6 py-3 rounded-lg"
+              >
+                <Bookmark size={18} />
+                Save Opportunity
+              </button>
+            </>
+          )}
         </div>
       </div>
     </section>

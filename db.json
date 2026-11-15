@@ -63,15 +63,38 @@
       "status": "Pending",
       "date": "11/12/2026",
       "id": "a2FdMEK-dZ0"
+    },
+    {
+      "userId": "OYRMuNKn0l0",
+      "opportunityId": "1",
+      "title": "Human Resource Intern",
+      "organization": "Northern Development Agency",
+      "status": "Pending",
+      "date": "11/15/2026",
+      "id": "EIJp3PeuZPs"
+    },
+    {
+      "userId": "OYRMuNKn0l0",
+      "opportunityId": "1",
+      "name": "Abdiaziz Adan",
+      "email": "abdiazizadan344@gmail.com",
+      "phone": "0721897262",
+      "coverLetter": "eryiuh",
+      "cvLink": "",
+      "title": "Human Resource Intern",
+      "organization": "Northern Development Agency",
+      "status": "Pending",
+      "date": "11/15/2026",
+      "id": "ydLhsAQfgGc"
     }
   ],
   "savedOpportunities": [
     {
       "userId": "OYRMuNKn0l0",
-      "opportunityId": "2",
-      "title": "Community Project Assistant",
-      "organization": "Community Development Initiative",
-      "id": "Nn6p7monrfY"
+      "opportunityId": "1",
+      "title": "Human Resource Intern",
+      "organization": "Northern Development Agency",
+      "id": "0uPvwa0hzgk"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
