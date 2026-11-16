@@ -1,3 +1,4 @@
+
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { User, Lock, Mail } from 'lucide-react'
@@ -14,69 +15,149 @@ function Account() {
 
   function handleSubmit(event) {
     event.preventDefault()
+
     setLoading(true)
     setMessage('')
 
-   
-if (isLogin) {
-  fetch('http://localhost:3000/users?email=' + encodeURIComponent(email.trim()))
-    .then(function (response) {
-      return response.json()
-    })
-    .then(function (users) {
+    // LOGIN
+    if (isLogin) {
+      fetch('http://localhost:3000/users?email=' + encodeURIComponent(email.trim()))
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error('Login request failed')
+          }
 
-      if (users.length === 0) {
-        setMessage('Email not found. Please register first.')
-        setLoading(false)
-        return
-      }
+          return response.json()
+        })
+        .then(function (users) {
+          if (users.length === 0) {
+            setMessage('Email not found. Please register first.')
+            setLoading(false)
+            return
+          }
 
-      const user = users[0]
+          const user = users[0]
 
-      if (user.password !== password) {
-        setMessage('Incorrect password.')
-        setLoading(false)
-        return
-      }
+          if (user.password !== password) {
+            setMessage('Incorrect password.')
+            setLoading(false)
+            return
+          }
 
-      localStorage.setItem('currentUser', JSON.stringify({
-        id: user.id,
-        name: user.name,
-        email: user.email
-      }))
-      setName("")
-      setEmail("")
-      setPassword("")
+          localStorage.setItem('currentUser', JSON.stringify({
+            id: user.id,
+            name: user.name,
+            email: user.email
+          }))
 
-      window.dispatchEvent(new Event('userChanged'))
+          setName('')
+          setEmail('')
+          setPassword('')
 
-      navigate('/dashboard')
-    })
-    .catch(function () {
-      setMessage('Unable to connect to the server.')
-      setLoading(false)
-    })
-}
+          window.dispatchEvent(new Event('userChanged'))
 
+          navigate('/dashboard')
+        })
+        .catch(function () {
+          setMessage('Unable to connect to the server.')
+          setLoading(false)
+        })
+
+    } else {
+
+      // REGISTER
+      fetch('http://localhost:3000/users?email=' + encodeURIComponent(email.trim()))
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error('Could not check email')
+          }
+
+          return response.json()
+        })
+        .then(function (users) {
+
+          if (users.length > 0) {
+            setMessage('This email is already registered.')
+            setLoading(false)
+            return
+          }
+
+          return fetch('http://localhost:3000/users', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              name: name.trim(),
+              email: email.trim(),
+              password: password
+            })
+          })
+        })
+        .then(function (response) {
+
+          if (!response) {
+            return
+          }
+
+          if (!response.ok) {
+            throw new Error('Registration failed')
+          }
+
+          return response.json()
+        })
+        .then(function (newUser) {
+
+          if (!newUser) {
+            return
+          }
+
+          localStorage.setItem('currentUser', JSON.stringify({
+            id: newUser.id,
+            name: newUser.name,
+            email: newUser.email
+          }))
+
+          setName('')
+          setEmail('')
+          setPassword('')
+
+          window.dispatchEvent(new Event('userChanged'))
+
+          navigate('/dashboard')
+        })
+        .catch(function () {
+          setMessage('Unable to register. Please try again.')
+          setLoading(false)
+        })
+    }
   }
 
   return (
     <section className="max-w-md mx-auto px-6 py-20">
       <div className="bg-white border rounded-2xl shadow-sm p-8">
+
         <h1 className="text-3xl font-bold text-center">
           {isLogin ? 'Welcome Back' : 'Create Your Account'}
         </h1>
 
         <p className="text-gray-500 text-center mt-2">
-          {isLogin ? 'Log in to access your opportunities.' : 'Register to apply and save opportunities.'}
+          {isLogin
+            ? 'Log in to access your opportunities.'
+            : 'Register to apply and save opportunities.'}
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+
           {!isLogin && (
             <div>
-              <label className="block mb-2 font-medium">Full Name</label>
+              <label className="block mb-2 font-medium">
+                Full Name
+              </label>
+
               <div className="flex items-center border rounded-lg px-3">
                 <User size={18} className="text-gray-400" />
+
                 <input
                   required
                   type="text"
@@ -92,9 +173,13 @@ if (isLogin) {
           )}
 
           <div>
-            <label className="block mb-2 font-medium">Email Address</label>
+            <label className="block mb-2 font-medium">
+              Email Address
+            </label>
+
             <div className="flex items-center border rounded-lg px-3">
               <Mail size={18} className="text-gray-400" />
+
               <input
                 required
                 type="email"
@@ -109,9 +194,13 @@ if (isLogin) {
           </div>
 
           <div>
-            <label className="block mb-2 font-medium">Password</label>
+            <label className="block mb-2 font-medium">
+              Password
+            </label>
+
             <div className="flex items-center border rounded-lg px-3">
               <Lock size={18} className="text-gray-400" />
+
               <input
                 required
                 minLength="6"
@@ -127,30 +216,46 @@ if (isLogin) {
           </div>
 
           {message && (
-            <p className="text-red-600 text-sm">{message}</p>
+            <p className="text-red-600 text-sm">
+              {message}
+            </p>
           )}
 
           <button
+            type="submit"
             disabled={loading}
             className="w-full bg-blue-700 text-white py-3 rounded-lg hover:bg-blue-800 disabled:opacity-50"
           >
-            {loading ? 'Please wait...' : isLogin ? 'Login' : 'Register'}
+            {loading
+              ? 'Please wait...'
+              : isLogin
+                ? 'Login'
+                : 'Register'}
           </button>
+
         </form>
 
         <p className="text-center text-gray-600 mt-6">
-          {isLogin ? "Don't have an account?" : 'Already have an account?'}
+          {isLogin
+            ? "Don't have an account?"
+            : 'Already have an account?'}
 
           <button
+            type="button"
             onClick={function () {
               setIsLogin(!isLogin)
               setMessage('')
+              setName('')
+              setEmail('')
+              setPassword('')
+              setLoading(false)
             }}
             className="text-blue-700 font-semibold ml-2"
           >
             {isLogin ? 'Register' : 'Login'}
           </button>
         </p>
+
       </div>
     </section>
   )

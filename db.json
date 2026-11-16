@@ -52,18 +52,15 @@
       "email": "test@gmail.com",
       "password": "123456",
       "id": "3xcPLn_qWQE"
+    },
+    {
+      "name": "Ali Adan",
+      "email": "ali@gamil.com",
+      "password": "87654321",
+      "id": "PB4nO2_Je6w"
     }
   ],
   "applications": [
-    {
-      "userId": "yJ0hCgA-pgY",
-      "opportunityId": "2",
-      "title": "Community Project Assistant",
-      "organization": "Community Development Initiative",
-      "status": "Pending",
-      "date": "11/12/2026",
-      "id": "a2FdMEK-dZ0"
-    },
     {
       "userId": "OYRMuNKn0l0",
       "opportunityId": "1",
