@@ -93,6 +93,18 @@
       "organization": "Northern Development Agency",
       "id": "0uPvwa0hzgk"
     }
-  ],
+    ],
+    "admins": [
+      {
+        "id": "1",
+        "name": "sytem administrator",
+        "email": "admin@opportunityhub.com",
+        "password": "admin6342"
+
+        
+      }
+
+    ],
+  
   "$schema": "./node_modules/json-server/schema.json"
 }

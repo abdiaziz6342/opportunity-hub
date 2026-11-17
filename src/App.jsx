@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './Layout'
 
 import Home from './pages/Home'
@@ -8,6 +9,18 @@ import Dashboard from './pages/Dashboard'
 import Account from './pages/Account'
 import About from './pages/About'
 import AdminDashboard from './pages/AdminDashboard'
+import AdminLogin from './pages/AdminLogin'
+
+// Protect the admin dashboard
+function AdminProtectedRoute() {
+  const savedAdmin = localStorage.getItem('currentAdmin')
+
+  if (!savedAdmin) {
+    return <Navigate to="/admin-login" replace />
+  }
+
+  return <AdminDashboard />
+}
 
 function App() {
   return (
@@ -20,7 +33,9 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="account" element={<Account />} />
           <Route path="about" element={<About />} />
-          <Route path="qase" element={<AdminDashboard />} />
+
+          <Route path="admin-login" element={<AdminLogin />} />
+          <Route path="admin" element={<AdminProtectedRoute />} />
         </Route>
       </Routes>
     </BrowserRouter>

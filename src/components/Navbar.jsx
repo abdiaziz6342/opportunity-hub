@@ -45,6 +45,7 @@ function Navbar() {
           <Link to="/">Home</Link>
           <Link to="/opportunities">Opportunities</Link>
           <Link to="/about">About</Link>
+          
 
           {user && (
             <Link to="/dashboard">My Dashboard</Link>
